@@ -2,7 +2,6 @@
 #include<stdlib.h>
 
 
-
 char *months[]={"jan","feb","mar","apr","may","jun","jul","aug","sep","oct","nov","dec"}; //aaray pointer of months
 int monthday[]={31,28,31,30,31,30,31,31,30,31,30,31}; //days in the every month
 
@@ -99,7 +98,7 @@ int month1(int year,int mond,int start_day)
         printf("  mon  tue  wed  thu  fri  sat\n"); //print monday to saturday
 
 
-// So O added "<=" here and "Weekday = 1 " and added "monthday [month -1]
+// .....................................So O added "<=" here and "Weekday = 1 " and added "monthday [month -1]  in Print dates in months" ........................................................
 
 	for(weekday=1 ;weekday <= start_day; weekday++)   //for next month starting day 
 		printf("     ");

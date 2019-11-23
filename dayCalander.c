@@ -1,43 +1,72 @@
 #include <stdio.h>
-#include <stdlib.h>
-int get_first_weekDay(int year)
-{
-    int day;
-    day = (((year - 1) * 365) + ((year - 1) / 4) - ((year - 1) / 100) + ((year) / 400) + 1) % 7;
-    return day;
+
+int isLeapYear( int year );        /* True if leap year */
+int leapYears( int year );         /* The number of leap year */
+int todayOf( int y, int m, int d); /* The number of days since the beginning of the year */
+long days( int y, int m, int d);   /* Total number of days */
+void calendar(int y, int m);       /* display calendar at m y */
+
+int main(void){
+    int year,month;
+
+    printf("Enter the month and year: ");
+    scanf("%d %d", &month, &year);
+
+    calendar(year, month);
+
+    return 0;
 }
-int main()
+
+int isLeapYear( int y ) /* True if leap year */
 {
+    return(y % 400 == 0) || ((y % 4 == 0) && (y % 100 != 0));
+}
 
-    int year,day=0,dayInMonth,weekDay=0,startingDay,month;
-    printf("Enter your desired year: ");
-    scanf("%d",&year);
-    char *months[]={"January","February","March","April","May","June","July","August","September","October","November","December"};
-    int monthDays[]={31,28,31,30,31,30,31,31,30,31,30,31};
-    if((year%4==0&&year%100!=0)||year%400==0)
-    {
-        monthDays[1]=29;
-    }
-    startingDay=get_first_weekDay(year);
-    for(month=0;month<12;month++)
-    {
-        dayInMonth=monthDays[month]+1;
-        printf("\n\n------------------%s----------------",months[month]);
-        printf("\n  Sun   Mon  Tue  Wed  Thurs Fri  Sat\n");
-        for(weekDay=0;weekDay<startingDay;weekDay++)
-        {
-           printf("     ");
-        }
-        for(day=1;day<dayInMonth;day++)
-        {
-            printf("%5d",day);
-            if(++weekDay>6)
-            {
-                printf("\n");
-                weekDay=0;
-            }
-            startingDay=weekDay;
-        }
-    }
+int leapYears( int y ) /* The number of leap year */
+{
+    return y/4 - y/100 + y/400;
+}
 
+int todayOf( int y, int m, int d) /* The number of days since the beginning of the year */
+{
+    static int DayOfMonth[] = 
+        { -1/*dummy*/,0,31,59,90,120,151,181,212,243,273,304,334};
+
+    return DayOfMonth[m] + d + ((m>2 && isLeapYear(y))? 1 : 0);
+}
+
+long days( int y, int m, int d) /* Total number of days */
+{
+    int lastYear;
+
+    lastYear = y - 1;
+
+    return 365L * lastYear + leapYears(lastYear) + todayOf(y,m,d);
+}
+
+void calendar(int y, int m) /* display calendar at m y */
+{
+    const char *NameOfMonth[] = { NULL/*dummp*/,
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+    };
+    char Week[] = "Su Mo Tu We Th Fr Sa";
+    int DayOfMonth[] =
+        { -1/*dummy*/,31,28,31,30,31,30,31,31,30,31,30,31 };
+    int weekOfTopDay;
+    int i,day;
+
+    weekOfTopDay = days(y, m, 1) % 7;
+    if(isLeapYear(y))
+        DayOfMonth[2] = 29;
+    printf("\n     %s %d\n%s\n", NameOfMonth[m], y, Week);
+
+    for(i=0;i<weekOfTopDay;i++)
+        printf("   ");
+    for(i=weekOfTopDay,day=1;day <= DayOfMonth[m];i++,day++){
+        printf("%2d ",day);
+        if(i % 7 == 6)
+            printf("\n");
+    }   
+    printf("\n");
 }
