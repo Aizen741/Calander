@@ -1,17 +1,20 @@
 #include<stdio.h>
 #include<stdlib.h>
 
+
+
 char *months[]={"jan","feb","mar","apr","may","jun","jul","aug","sep","oct","nov","dec"}; //aaray pointer of months
 int monthday[]={31,28,31,30,31,30,31,31,30,31,30,31}; //days in the every month
 
+
 void red()
 {
-	printf("\033[1;31m]");
+	printf("\033[1;31m");
 }
 
 void black()
 {
-	printf("\033[0m]");
+	printf("\033[0m");
 }
 
 int start_day(int year)
@@ -49,7 +52,6 @@ void cal(int year, int start_day)
 		printf("\n\n");
 		black();
 		printf("*****************%s*****************\n",months[month]);
-		
 		red();
 		printf("  sun");   //printing sunday in red
 		black();
@@ -95,9 +97,13 @@ int month1(int year,int mond,int start_day)
         printf("  sun");   //printing sunday in red
         black();
         printf("  mon  tue  wed  thu  fri  sat\n"); //print monday to saturday
-	for(weekday=0;weekday<start_day;weekday++)   //for next month starting day 
+
+
+// So O added "<=" here and "Weekday = 1 " and added "monthday [month -1]
+
+	for(weekday=1 ;weekday <= start_day; weekday++)   //for next month starting day 
 		printf("     ");
-		for(day=1;day<=daysinmonth;day++)   //print the dates in a month
+		for(day=1;day<=monthday[month-1] ;day++)   //print the dates in a month
 		{
 			red();
 			if(weekday==0)
